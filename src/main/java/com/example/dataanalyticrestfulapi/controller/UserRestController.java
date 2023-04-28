@@ -6,6 +6,7 @@ import com.example.dataanalyticrestfulapi.model.request.UserRequest;
 import com.example.dataanalyticrestfulapi.repository.UserRepo;
 import com.example.dataanalyticrestfulapi.service.UserService;
 import com.example.dataanalyticrestfulapi.utils.Response;
+import jakarta.validation.Valid;
 import org.mapstruct.control.MappingControl;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class UserRestController {
         }
     }
     @PostMapping("/new-user")
-    public Response<User> createUser(@RequestBody UserRequest request){
+    public Response<User> createUser(@Valid @RequestBody UserRequest request){
         System.out.println("affectRow" + request);
         try {
             int userId = userService.createNewUser(request);
@@ -75,18 +76,18 @@ public class UserRestController {
             return Response.<List<UserAccount>>exception().setMessage("Exception occurs ! Failed to retrieved all users accounts! ").setSuccess(false);
         }
     }
-    @DeleteMapping("/remove/{id}")
-    Response<User> removeUser(@PathVariable("id")Integer id){
+    @DeleteMapping("/{id}")
+   public Response<?> removeUser(@PathVariable int id){
         try {
-            int result= userService.removeUser(id); ;
-            if(result>0) {
-                return Response.<User>deleteSuccess().setMessage("Delete Successfully .");
+            int affectedRow = userService.removeUser(id); ;
+            if(affectedRow > 0) {
+                return Response.<Object>deleteSuccess().setMessage("Delete User Successfully  .");
             }else {
-                return Response.<User>ok().setMessage("Not found user by id :"+id);
+                return Response.<Object>notFound().setMessage("User with id =  :"+id + " doesn't exist in your system !");
             }
         }catch (Exception e){
             System.out.println("this is error :"+e);
-            return Response.<User>exception().setMessage("Remove Values is Failed.").setSuccess(false);
+            return Response.<Object>exception().setMessage("Exception occurred ! Failed to delete the user !").setSuccess(false);
         }
 
     }

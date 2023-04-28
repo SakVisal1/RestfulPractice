@@ -54,5 +54,5 @@ public interface UserRepo {
     User findUserById(int id);
 
     @Delete("DELETE FROM users_tb WHERE id=#{id}")
-    int removeUser(@Param("id") Integer id);
+    int removeUser(@Param("id") int id);
 }
