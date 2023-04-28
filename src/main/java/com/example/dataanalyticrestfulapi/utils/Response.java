@@ -47,6 +47,10 @@ public class Response<T> {
         response.setStatus(Status.NOT_FOUND);
         return response;
     }
+//    public static <T> Response<T> badRequest(){
+//        Response<T> response = new Response<>();
+//        response.setSuccess()
+//    }
     public static <T> Response<T> exception(){
         Response<T> response = new Response<>();
         response.setStatus(Status.EXCEPTION);

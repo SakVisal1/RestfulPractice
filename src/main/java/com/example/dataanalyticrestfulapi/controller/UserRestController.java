@@ -2,8 +2,11 @@ package com.example.dataanalyticrestfulapi.controller;
 
 import com.example.dataanalyticrestfulapi.model.User;
 import com.example.dataanalyticrestfulapi.model.UserAccount;
+import com.example.dataanalyticrestfulapi.model.request.UserRequest;
+import com.example.dataanalyticrestfulapi.repository.UserRepo;
 import com.example.dataanalyticrestfulapi.service.UserService;
 import com.example.dataanalyticrestfulapi.utils.Response;
+import org.mapstruct.control.MappingControl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,26 +20,47 @@ public class UserRestController {
         this.userService = userService;
     }
     @GetMapping("/allUsers")
-    List<User> getAllUsers(){
-        return userService.allUsers();
+   public Response<List<User>> getAllUsers(){
+        try {
+            List<User> response = userService.allUsers();
+            return Response.<List<User>>ok().setPayload(response).setMessage("Successfully retrieved all users !");
+        }catch (Exception exception){
+            return Response.<List<User>>exception().setMessage("Failed to retrieved the users! Exception occurred!");
+        }
+
     }
     @GetMapping("/{id}")
-    public User findUserByID(@PathVariable int id){
-        return userService.findUserByID(id);
+    public Response<User> findUserByID(@PathVariable int id){
+        try{
+           User response = userService.findUserByID(id);
+          if(response != null){
+              return Response.<User>ok().setPayload(response)
+                      .setSuccess(true).setMessage("Successfully retrieved user with id : " +id);
+          }else {
+              return Response.<User>notFound().setMessage("User with id =" + id + "doesn't exist").setSuccess(false);
+          }
+       }catch(Exception exception){
+            return Response.<User>exception().setMessage("Failed to retrieved user with id= " + id);
+        }
     }
     @PostMapping("/new-user")
-    public String createUser(@RequestBody User user){
-        System.out.println("affectRow" + user);
+    public Response<User> createUser(@RequestBody UserRequest request){
+        System.out.println("affectRow" + request);
         try {
-            int affectRow = userService.createNewUser(user);
-            System.out.println("affectRow" + affectRow);
-          if (affectRow>0)
-              return "create user successfully !";
-          else
-              return "Cannot created a new user! ";
+            int userId = userService.createNewUser(request);
+            System.out.println("affectRow" + userId);
+          if (userId>0) {
+              User response = new User().setUserId(userId).setUsername(request.getUsername())
+                      .setAddress(request.getAddress())
+                      .setGender(request.getGender());
+
+
+              return Response.<User>updateSuccess().setPayload(response).setMessage("Create User Successfully").setSuccess(true);
+          }else
+              return Response.<User>notFound().setMessage("failed to create user ");
 
         }catch (Exception exception){
-            return exception.getMessage();
+            return Response.<User>exception().setMessage("Exception occurs! Failed to create a new user").setSuccess(false);
         }
     }
 
@@ -66,18 +90,23 @@ public class UserRestController {
         }
 
     }
-    @GetMapping("/update/{id}")
-    Response<User> updateUser(@RequestBody User user,@PathVariable("id") int id){
+    @PutMapping("/{id}")
+    public Response<User> updateUserByID(@PathVariable int id,@RequestBody UserRequest request){
         try {
-            int result= userService.updateUser(user,id);
-            if(result>0) {
-                return Response.<User>updateSuccess().setPayload(user).setMessage("You Are Updated Successfully.");
+            int affectedRow = userService.updateUser(request,id);
+            if(affectedRow>0){
+                User response = new User().setUserId(id).setUsername(request.getUsername())
+                        .setAddress(request.getAddress()).setGender(request.getGender());
+                return Response.<User>updateSuccess().setMessage("Successfully to update users")
+                        .setPayload(response).setSuccess(true);
             }else {
-                return Response.<User>ok().setMessage("Not found User by id :"+id);
+                return Response.<User>notFound().setMessage("Cannot update , user with id : " +id +
+                        "doesn't exist ! ").setSuccess(false);
             }
         }catch (Exception e){
-            System.out.println("this is error :"+e);
-            return Response.<User>exception().setMessage("Update Value Fail.").setSuccess(false);
+                return Response.<User>exception().setMessage("Failed to update user, Exception occurs !");
         }
+
     }
+
 }

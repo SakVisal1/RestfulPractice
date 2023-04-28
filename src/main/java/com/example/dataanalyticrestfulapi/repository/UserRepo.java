@@ -3,6 +3,7 @@ package com.example.dataanalyticrestfulapi.repository;
 import com.example.dataanalyticrestfulapi.model.Account;
 import com.example.dataanalyticrestfulapi.model.User;
 import com.example.dataanalyticrestfulapi.model.UserAccount;
+import com.example.dataanalyticrestfulapi.model.request.UserRequest;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -15,13 +16,15 @@ public interface UserRepo {
     @Select(" select * from users_tb")
     List<User> allUsers();
     List<User> findUserByUsername(String username);
-    @Insert("insert into users_tb (username, gender, address)\n" +
-            "values(#{user.username},#{user.gender},#{user.address})")
-    int createNewUser(@Param("user") User user);
+
+
+    @Select("insert into users_tb (username, gender, address)\n" +
+            "values(#{user.username},#{user.gender},#{user.address}) returning id")
+    int createNewUser(@Param("user") UserRequest user);
     @Update("UPDATE users_tb SET username=#{user.username}," +
             "gender=#{user.gender},address=#{user.address} " +
             "WHERE id=#{id}")
-    int updateUsers(@Param("user") User user,@Param("id") int id);
+    int updateUsers(@Param("user") UserRequest user,int id);
     @Results({
 //            @Result(column = "id", property = "userId"),
 //            @Result(property = "userId", column = "id"),
