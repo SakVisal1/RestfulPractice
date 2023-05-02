@@ -2,6 +2,7 @@ package com.example.dataanalyticrestfulapi.controller;
 
 import com.example.dataanalyticrestfulapi.model.response.FileUploadResponse;
 import com.example.dataanalyticrestfulapi.service.FileUploadService;
+import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

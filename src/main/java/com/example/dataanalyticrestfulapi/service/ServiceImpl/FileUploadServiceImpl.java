@@ -12,6 +12,7 @@ import java.util.UUID;
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
 
+
     @Override
     public String uploadImage(String path, MultipartFile file) throws IOException {
         String name = file.getOriginalFilename();
