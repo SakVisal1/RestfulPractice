@@ -5,6 +5,8 @@ import com.example.dataanalyticrestfulapi.model.UserAccount;
 import com.example.dataanalyticrestfulapi.model.request.UserRequest;
 import com.example.dataanalyticrestfulapi.repository.UserRepo;
 import com.example.dataanalyticrestfulapi.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +23,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> allUsers() {
-        return userRepo.allUsers();
+    public PageInfo<User> allUsers(int page ,int size,String filterName) {
+        // page helper is here
+        PageHelper.startPage(page,size);
+        return  new PageInfo<>(userRepo.allUsers(filterName));
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.example.dataanalyticrestfulapi.model.Account;
 import com.example.dataanalyticrestfulapi.model.User;
 import com.example.dataanalyticrestfulapi.model.UserAccount;
 import com.example.dataanalyticrestfulapi.model.request.UserRequest;
+import com.example.dataanalyticrestfulapi.repository.provider.UserProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -13,8 +14,8 @@ import java.util.List;
 @Repository
 public interface UserRepo {
     @Result(property = "userId", column = "id")
-    @Select(" select * from users_tb")
-    List<User> allUsers();
+    @SelectProvider(type = UserProvider.class, method = "getAllUsers")
+    List<User> allUsers(String filterName);
     List<User> findUserByUsername(String username);
 
 
