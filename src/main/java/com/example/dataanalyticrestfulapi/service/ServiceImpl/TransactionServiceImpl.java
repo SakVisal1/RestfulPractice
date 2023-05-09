@@ -1,5 +1,6 @@
 package com.example.dataanalyticrestfulapi.service.ServiceImpl;
 
+import com.example.dataanalyticrestfulapi.model.Transaction;
 import com.example.dataanalyticrestfulapi.model.request.TransactionRequest;
 import com.example.dataanalyticrestfulapi.model.response.TransactionResponse;
 import com.example.dataanalyticrestfulapi.repository.TransactionAccountRepo;
@@ -7,7 +8,6 @@ import com.example.dataanalyticrestfulapi.repository.TransactionRepo;
 import com.example.dataanalyticrestfulapi.service.TransactionsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.transaction.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

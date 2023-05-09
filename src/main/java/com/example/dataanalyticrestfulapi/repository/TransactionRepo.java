@@ -1,13 +1,16 @@
 package com.example.dataanalyticrestfulapi.repository;
 
+import com.example.dataanalyticrestfulapi.model.Transaction;
 import com.example.dataanalyticrestfulapi.model.request.TransactionRequest;
 import com.example.dataanalyticrestfulapi.model.response.TransactionResponse;
 import com.example.dataanalyticrestfulapi.repository.provider.TransactionProvider;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.transaction.Transaction;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+@Mapper
 @Repository
 public interface TransactionRepo {
 

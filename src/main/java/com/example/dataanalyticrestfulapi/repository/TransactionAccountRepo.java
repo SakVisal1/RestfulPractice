@@ -3,13 +3,11 @@ package com.example.dataanalyticrestfulapi.repository;
 import com.example.dataanalyticrestfulapi.model.Account;
 import com.example.dataanalyticrestfulapi.model.AccountType;
 import com.example.dataanalyticrestfulapi.model.User;
-import org.apache.ibatis.annotations.One;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+@Mapper
 @Repository
 public interface TransactionAccountRepo {
     @Results({

@@ -1,9 +1,9 @@
 package com.example.dataanalyticrestfulapi.service;
 
+import com.example.dataanalyticrestfulapi.model.Transaction;
 import com.example.dataanalyticrestfulapi.model.request.TransactionRequest;
 import com.example.dataanalyticrestfulapi.model.response.TransactionResponse;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.transaction.Transaction;
 
 public interface TransactionsService {
     PageInfo<Transaction> getAllTransaction(int page, int limit);

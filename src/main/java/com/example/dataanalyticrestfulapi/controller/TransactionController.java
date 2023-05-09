@@ -6,6 +6,7 @@ import com.example.dataanalyticrestfulapi.model.response.TransactionResponse;
 import com.example.dataanalyticrestfulapi.service.TransactionsService;
 import com.example.dataanalyticrestfulapi.utils.Response;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Date;
 public class TransactionController {
 
     TransactionsService transactionsService;
+    @Autowired
     TransactionController(TransactionsService transactionsService){
         this.transactionsService = transactionsService;
     }
@@ -21,7 +23,7 @@ public class TransactionController {
     @GetMapping("")
     Response<PageInfo<Transaction>> getAllTransaction(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit){
         try {
-            PageInfo<Transaction> transactionPageInfo =transactionsService.getAllTransaction(page, limit);
+            PageInfo<Transaction> transactionPageInfo=transactionsService.getAllTransaction(page,limit);
             return Response.<PageInfo<Transaction>>ok().setPayload(transactionPageInfo).setMessage("Here is your data.");
         }catch (Exception ex){
             System.out.println("Error :"+ex);
