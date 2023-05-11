@@ -16,7 +16,7 @@ public interface TransactionRepo {
 
     @Results({
             @Result(column = "sender_account_id",property = "senderAccountId"),
-            @Result(column = "receive_account_id",property = "receiveAccountId"),
+            @Result(column = "receiver_account-id",property = "receiveAccountId"),
             @Result(column = "transfer_at",property = "transferAt")
     })
     @SelectProvider(type = TransactionProvider.class,method = "getAllTransaction")
@@ -31,7 +31,7 @@ public interface TransactionRepo {
 
     @Results({
             @Result(column = "sender_account_id",property = "senderAccountId",one = @One(select = "com.example.demo.repository.TransactionAccountRepository.getTransactionAccount")),
-            @Result(column = "receive_account_id",property = "receiveAccountId",one = @One(select = "com.example.demo.repository.TransactionAccountRepository.getTransactionAccount")),
+            @Result(column = "receiver_account-id",property = "receiveAccountId",one = @One(select = "com.example.demo.repository.TransactionAccountRepository.getTransactionAccount")),
             @Result(column = "transfer_at",property = "transferAt")
     })
     @SelectProvider(type = TransactionProvider.class,method = "getAllTransactionAccount")
