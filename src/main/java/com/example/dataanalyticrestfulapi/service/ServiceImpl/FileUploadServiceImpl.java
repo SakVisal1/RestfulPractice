@@ -1,6 +1,8 @@
 package com.example.dataanalyticrestfulapi.service.ServiceImpl;
 
 import com.example.dataanalyticrestfulapi.service.FileUploadService;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -99,5 +101,20 @@ public class FileUploadServiceImpl implements FileUploadService {
             return "Failed to delete all files ! Exception occurred !";
         }
 
+    }
+
+    @Override
+    public Resource loadFileAsResource(String filename) throws Exception {
+        Path resourcePath = this.fileLocationStorage.resolve(filename).normalize();
+        try{
+            Resource resource = new UrlResource(resourcePath.toUri());
+            if(resource.exists()){
+                return resource;
+            }else {
+                throw new Exception("Resource doesn't exits!");
+            }
+        }catch (Exception ex){
+            throw new Exception("Exception Occurred !! Failed to Download the images");
+        }
     }
 }
